@@ -1,34 +1,20 @@
 pipeline {
-    agent any
-    
-    // NOTE: The 'options { cleanWs() }' block has been removed as requested.
-    // Be aware that this may cause the 'corrupt .git repository' error on subsequent runs.
-
-    stages {
-        
-        stage('Clone Repository') {
-            steps {
-                // Uses the correct GitHub URL and 'main' branch
-                git url: 'https://github.com/konudulajasmitha/reg.git', branch: 'main'
-            }
-        }
-        
-        stage('Build Docker Image') {
-            steps {
-                // Builds the Docker image: register:v1
-                bat 'docker build -t register:v1 .'
-            }
-        }
-        
-        stage('Run Docker Container') {
-            steps {
-                // FIX: Corrects typo 'registr-container' to 'register-container'
-                // Stops/removes existing container to prevent 'port already allocated' error
-                bat 'docker rm -f register-container || exit 0' 
-                
-                // Runs container and maps internal app port 5000 to external host port 5000
-                bat 'docker run -d -p 5000:5000 --name register-container register:v1'
-            }
-        }
-    }
+   agent any
+   stages {
+       stage('Build') {
+           steps {
+               echo 'Building..'
+           }
+       }
+       stage('Test') {
+           steps {
+               echo 'Testing..'
+           }
+       }
+       stage('Deploy') {
+           steps {
+               echo 'Deploying....'
+           }
+       }
+   }
 }
